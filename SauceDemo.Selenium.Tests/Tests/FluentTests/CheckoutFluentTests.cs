@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace SauceDemo.Selenium.Tests.Tests.FluentTests
 {
-    internal class CheckoutFluentTests
+    public class CheckoutFluentTests
     {
+
     }
 }
