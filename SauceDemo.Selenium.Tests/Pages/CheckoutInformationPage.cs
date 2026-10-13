@@ -18,6 +18,7 @@ namespace SauceDemo.Selenium.Tests.Pages
         private readonly By _zipOrPostalCodeLocator = By.CssSelector("[data-test='postalCode']");
         private readonly By _cancelButtonLocator = By.CssSelector("[data-test='cancel']");
         private readonly By _continueButtonLocator = By.CssSelector("[data-test='continue']");
+        private readonly By _errorLocator = By.CssSelector("[data-test='error']");
 
         [AllureStep("Считываем заголовок страницы ввода данных доставки")]
         public string GetTitleText()
@@ -46,6 +47,12 @@ namespace SauceDemo.Selenium.Tests.Pages
         {
              _driver.FindElement(_continueButtonLocator).Click();
             return new CheckoutOverviewPage(_driver);
+        }
+
+        [AllureStep("Считываем ошибку при заполнении")]
+        public string GetErrorText()
+        {
+            return _driver.FindElement(_errorLocator).Text;
         }
     }
 }

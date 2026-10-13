@@ -43,5 +43,6 @@ namespace SauceDemo.Selenium.Tests.Pages
             _driver.FindElement(_generatePdfOrderButtonLocator).Click();
             return this;
         }
+
     }
 }
