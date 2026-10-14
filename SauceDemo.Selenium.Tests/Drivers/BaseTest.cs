@@ -1,7 +1,9 @@
 ﻿using Allure.Net.Commons;
 using Allure.NUnit;
+using Microsoft.Extensions.Configuration;
 using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
 using System;
@@ -20,24 +22,29 @@ namespace SauceDemo.Selenium.Tests.Drivers
     public class BaseTest
     {
         protected IWebDriver? _driver;
+        protected IConfiguration? _configuration;
 
         [SetUp]
         public void Setup()
         {
-            var options = new FirefoxOptions();
-            options.SetPreference("browser.shell.checkDefaultBrowser", false);
+            _configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
 
-            options.AddAdditionalOption("selenoid:options", new Dictionary<string, object>
-        {
-            { "enableVNC", true },
-            { "enableVideo", true }
-        });
+            string baseUrl = _configuration["TestConfig:BaseUrl"] ?? "https://saucedemo.com";
+            string gridUrl = _configuration["TestConfig:GridUrl"] ?? "http://localhost:4444/wd/hub";
+            string browser = _configuration["TestConfig:Browser"] ?? "Firefox";
 
-            _driver = new OpenQA.Selenium.Remote.RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), options);
+            DriverOptions options = browser.ToLower() == "chrome"
+                ? new ChromeOptions()
+                : new FirefoxOptions();
 
+            _driver = new RemoteWebDriver(new Uri(gridUrl), options);
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             _driver.Manage().Window.Maximize();
-            _driver.Navigate().GoToUrl("https://saucedemo.com");
+
+            _driver.Navigate().GoToUrl(baseUrl);
         }
 
         [TearDown]
