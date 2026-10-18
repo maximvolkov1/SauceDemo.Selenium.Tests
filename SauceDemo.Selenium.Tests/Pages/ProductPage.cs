@@ -22,16 +22,14 @@ namespace SauceDemo.Selenium.Tests.Pages
         private readonly By _productImagesLocator = By.CssSelector(".inventory_item_img img");
 
         [AllureStep("Считываем заголовок страницы витрины")]
-        public string GetTitleText()
-        {
-            return _driver.FindElement(_titleLocator).Text;
-        }
+        public string GetTitleText() => WaitAndGetText(_titleLocator); 
+        
 
         [AllureStep("Добавляем товар '{0}' в корзину")]
         public ProductPage AddProductToCart(string productName)
         {
             var locator = By.XPath($"//div[@class='inventory_item'][.//div[contains(@class, 'inventory_item_name') and text()='{productName}']]//button");
-            _driver.FindElement(locator).Click();
+            WaitAndClick(locator);
             return this;
         }
 
@@ -39,14 +37,14 @@ namespace SauceDemo.Selenium.Tests.Pages
         public ProductPage RemoveProductFromCart(string productName)
         {
             var locator = By.XPath($"//div[@class='inventory_item'][.//div[contains(@class, 'inventory_item_name') and text()='{productName}']]//button");
-            _driver.FindElement(locator).Click();
+            WaitAndClick(locator);
             return this;
         }
 
         [AllureStep("Считываем названия всех товаров с витрины")]
         public List<string> GetAllProductNames()
         {
-            return _driver.FindElements(_productNamesLocator)
+            return WaitAndGetElements(_productNamesLocator)
                 .Select(element => element.Text.Trim())
                 .ToList();
         }
@@ -54,7 +52,7 @@ namespace SauceDemo.Selenium.Tests.Pages
         [AllureStep("Считываем цены всех товаров с витрины")]
         public List<double> GetAllProductPrices()
         {
-            return _driver.FindElements(_productPricesLocator)
+            return WaitAndGetElements(_productPricesLocator)
                 .Select(element => element.Text.Replace("$", "").Trim())
                 .Select(text => double.Parse(text, System.Globalization.CultureInfo.InvariantCulture))
                 .ToList();
@@ -63,7 +61,8 @@ namespace SauceDemo.Selenium.Tests.Pages
         [AllureStep("Выбираем сортировку '{0}'")]
         public ProductPage SelectSortOptionByText(string optionText)
         {
-            new SelectElement(_driver.FindElement(_sortContainerLocator)).SelectByText(optionText);
+            IWebElement sortElement = WaitAndGetElement(_sortContainerLocator);
+            new SelectElement(sortElement).SelectByText(optionText);
             return this;
         }
 
@@ -71,7 +70,7 @@ namespace SauceDemo.Selenium.Tests.Pages
         public ProductDetailsPage ClickProductSpecificationByName(string productName)
         {
             var locator = By.XPath($"//div[contains(@class, 'inventory_item_name') and text()='{productName}']");
-            _driver.FindElement(locator).Click();
+            WaitAndClick(locator);
             return new ProductDetailsPage(_driver);
         }
 
@@ -79,14 +78,14 @@ namespace SauceDemo.Selenium.Tests.Pages
         public ProductDetailsPage ClickProductImageByName(string productName)
         {
             var locator = By.XPath($"//div[@class='inventory_item'][.//div[contains(@class, 'inventory_item_name') and text()='{productName}']]//div[@class='inventory_item_img']//a");
-            _driver.FindElement(locator).Click();
+            WaitAndClick(locator);
             return new ProductDetailsPage(_driver);
         }
 
         [AllureStep("Считываем описания всех товаров с витрины")]
         public List<string> GetAllProductDescriptions()
         {
-            return _driver.FindElements(_productDescriptionsLocator)
+            return WaitAndGetElements(_productDescriptionsLocator)
                 .Select(element => element.Text.Trim())
                 .ToList();
         }
@@ -94,7 +93,7 @@ namespace SauceDemo.Selenium.Tests.Pages
         [AllureStep("Считываем ссылки на изображения всех товаров с витрины")]
         public List<string?> GetAllProductImageUrls()
         {
-            return _driver.FindElements(_productImagesLocator)
+            return WaitAndGetElements(_productImagesLocator)
                 .Select(element => element.GetAttribute("src"))
                 .ToList();
         }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SauceDemo.Selenium.Tests.Tests.ClassicTests
 {
+    [TestFixture]
     public class CartTests
     {
 

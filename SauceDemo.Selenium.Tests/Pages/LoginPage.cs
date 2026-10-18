@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace SauceDemo.Selenium.Tests.Pages
 {
-    public class LoginPage
+    public class LoginPage : BasePage
     {
-        private readonly IWebDriver _driver;
-        public LoginPage(IWebDriver driver) => _driver = driver;
+        public LoginPage(IWebDriver driver) : base(driver) { }
 
         private readonly By _usernameLocator = By.CssSelector("[data-test='username']");
         private readonly By _passwordLocator = By.CssSelector("[data-test='password']");
@@ -20,15 +19,9 @@ namespace SauceDemo.Selenium.Tests.Pages
 
         public LoginPage Login(string username, string password)
         {
-            var usernameField = _driver.FindElement(_usernameLocator);
-            usernameField.Clear();
-            usernameField.SendKeys(username);
-
-            var passwordField = _driver.FindElement(_passwordLocator);
-            passwordField.Clear();
-            passwordField.SendKeys(password);
-
-            _driver.FindElement(_loginButtonLocator).Click();
+            WaitAndSendKeys(_usernameLocator, username);
+            WaitAndSendKeys(_passwordLocator, password);
+            WaitAndClick(_loginButtonLocator);
             return this;
         }
 
@@ -49,7 +42,7 @@ namespace SauceDemo.Selenium.Tests.Pages
         [AllureStep("Считывание текста появившейся ошибки на странице логина")]
         public string GetErrorMessageText()
         {
-            return _driver.FindElement(_errorMessageLocator).Text;
+            return WaitAndGetText(_errorMessageLocator);
         }
     }
 }
