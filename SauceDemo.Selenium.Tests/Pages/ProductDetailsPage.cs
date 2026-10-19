@@ -20,34 +20,34 @@ namespace SauceDemo.Selenium.Tests.Pages
         private readonly By _cartButtonLocator = By.CssSelector(".btn_inventory");
 
         [AllureStep("Считываем название товара в его карточке")]
-        public string GetProductName() => _driver.FindElement(_productNameLocator).Text;
+        public string GetProductName() => WaitAndGetText(_productNameLocator);
 
         [AllureStep("Считываем цену товара в его карточке")]
-        public string GetProductPrice() => _driver.FindElement(_productPriceLocator).Text;
+        public string GetProductPrice() => WaitAndGetText(_productPriceLocator);
 
         [AllureStep("Считываем описание товара в его карточке")]
-        public string GetProductDescription() => _driver.FindElement(_productDescriptionLocator).Text;
+        public string GetProductDescription() => WaitAndGetText(_productDescriptionLocator);
 
         [AllureStep("Нажимаем кнопку 'Back to Products' для возврата на витрину")]
         public ProductPage ClickBackToProducts()
         {
-            _driver.FindElement(_backToProductsButtonLocator).Click();
+            WaitAndClick(_backToProductsButtonLocator);
             return new ProductPage(_driver);
         }
 
         [AllureStep("Проверяем, отображается ли изображение товара в его карточке")]
-        public bool IsImageDisplayed() => _driver.FindElement(_productImageLocator).Displayed;
+        public bool IsImageDisplayed() => WaitAndGetElement(_productImageLocator).Displayed;
 
         [AllureStep("Считываем ссылку на изображение товара в его карточке")]
-        public string? GetProductImageUrl() => _driver.FindElement(_productImageLocator).GetAttribute("src");
+        public string? GetProductImageUrl() => WaitAndGetElement(_productImageLocator).GetAttribute("src");
 
         [AllureStep("Считываем текущий текст кнопки корзины ('Add to cart' / 'Remove')")]
-        public string GetCartButtonText() => _driver.FindElement(_cartButtonLocator).Text;
+        public string GetCartButtonText() => WaitAndGetText(_cartButtonLocator);
 
         [AllureStep("Нажимаем на кнопку добавления/удаления товара в его карточке")]
         public ProductDetailsPage ClickCartButton()
         {
-            _driver.FindElement(_cartButtonLocator).Click();
+            WaitAndClick(_cartButtonLocator);
             return this;
         }
     }

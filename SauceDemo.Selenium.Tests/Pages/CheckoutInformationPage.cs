@@ -21,38 +21,33 @@ namespace SauceDemo.Selenium.Tests.Pages
         private readonly By _errorLocator = By.CssSelector("[data-test='error']");
 
         [AllureStep("Считываем заголовок страницы ввода данных доставки")]
-        public string GetTitleText()
-        {
-            return _driver.FindElement(_titleLocator).Text;
-        }
+        public string GetTitleText() => WaitAndGetText(_titleLocator);
 
         [AllureStep("Отменяем оформление заказа и возвращаемся на витрину товаров")]
         public ProductPage ClickCancel()
         {
-            _driver.FindElement(_cancelButtonLocator).Click();
+            WaitAndClick(_cancelButtonLocator);
             return new ProductPage(_driver);
         }
 
         [AllureStep("Вводим данные покупателя: Имя='{0}', Фамилия='{1}', Индекс='{2}'")]
         public CheckoutInformationPage FillCheckoutInformation(string firstName, string lastName, string zipOrPostalCode)
         {
-            _driver.FindElement(_firstNameLocator).SendKeys(firstName);
-            _driver.FindElement(_lastNameLocator).SendKeys(lastName);
-            _driver.FindElement(_zipOrPostalCodeLocator).SendKeys(zipOrPostalCode);
+            WaitAndSendKeys(_firstNameLocator, firstName);
+            WaitAndSendKeys(_lastNameLocator, lastName);
+            WaitAndSendKeys(_zipOrPostalCodeLocator, zipOrPostalCode);
             return this;
         }
 
         [AllureStep("Продолжаем оформление заказа и переходим к проверке чека")]
         public CheckoutOverviewPage ClickContinue()
         {
-             _driver.FindElement(_continueButtonLocator).Click();
+             WaitAndClick(_continueButtonLocator);
             return new CheckoutOverviewPage(_driver);
         }
 
         [AllureStep("Считываем ошибку при заполнении")]
-        public string GetErrorText()
-        {
-            return _driver.FindElement(_errorLocator).Text;
-        }
+        public string GetErrorText() => WaitAndGetText(_errorLocator);
+
     }
 }

@@ -21,22 +21,19 @@ namespace SauceDemo.Selenium.Tests.Pages
         private readonly By _inventoryItemPriceLocator = By.CssSelector("[data-test='inventory-item-price']");
 
         [AllureStep("Считываем заголовок страницы корзины")]
-        public string GetTitleText()
-        {
-            return _driver.FindElement(_titleLocator).Text;
-        }
+        public string GetTitleText() => WaitAndGetText(_titleLocator);
 
         [AllureStep("Переходим к оформлению заказа (Checkout)")]
         public CheckoutInformationPage ClickCheckout()
         {
-            _driver.FindElement(_checkoutButtonLocator).Click();
+            WaitAndClick(_checkoutButtonLocator);
             return new CheckoutInformationPage(_driver);
         }
 
         [AllureStep("Возвращаемся из корзины обратно на витрину товаров")]
         public ProductPage ClickContinueShopping()
         {
-            _driver.FindElement(_continueShoppingButtonLocator).Click();
+            WaitAndClick(_continueShoppingButtonLocator);
             return new ProductPage(_driver);
         }
 
@@ -44,35 +41,35 @@ namespace SauceDemo.Selenium.Tests.Pages
         public CartPage RemoveProductByName(string productSystemName)
         {
             By dynamicRemoveLocator = By.CssSelector($"[data-test='remove-{productSystemName}']");
-            _driver.FindElement(dynamicRemoveLocator).Click();
+            WaitAndClick(dynamicRemoveLocator);
             return this;
         }
 
         [AllureStep("Считываем количество товара '{0}' в корзине")]
         public string GetProductQuantityByName(string productName)
         {
-            var itemContainer = _driver.FindElement(By.XPath($"//div[@class='cart_item' and .//div[@data-test='inventory-item-name' and text()='{productName}']]"));
+            var itemContainer = WaitAndGetElement(By.XPath($"//div[@class='cart_item' and .//div[@data-test='inventory-item-name' and text()='{productName}']]"));
             return itemContainer.FindElement(_cartQuantityLocator).Text;
         }
 
         [AllureStep("Считываем описание товара '{0}' в корзине")]
         public string GetProductDescriptionByName(string productName)
         {
-            var itemContainer = _driver.FindElement(By.XPath($"//div[@class='cart_item' and .//div[@data-test='inventory-item-name' and text()='{productName}']]"));
+            var itemContainer = WaitAndGetElement(By.XPath($"//div[@class='cart_item' and .//div[@data-test='inventory-item-name' and text()='{productName}']]"));
             return itemContainer.FindElement(_inventoryItemDescLocator).Text;
         }
 
         [AllureStep("Считываем цену товара '{0}' в корзине")]
         public string GetProductPriceByName(string productName)
         {
-            var itemContainer = _driver.FindElement(By.XPath($"//div[@class='cart_item' and .//div[@data-test='inventory-item-name' and text()='{productName}']]"));
+            var itemContainer = WaitAndGetElement(By.XPath($"//div[@class='cart_item' and .//div[@data-test='inventory-item-name' and text()='{productName}']]"));
             return itemContainer.FindElement(_inventoryItemPriceLocator).Text;
         }
 
         [AllureStep("Кликаем по названию товара '{0}', чтобы перейти в его карточку")]
         public ProductDetailsPage ClickProductName(string productName)
         {
-            var itemContainer = _driver.FindElement(By.XPath($"//div[@class='cart_item' and .//div[@data-test='inventory-item-name' and text()='{productName}']]"));
+            var itemContainer = WaitAndGetElement(By.XPath($"//div[@class='cart_item' and .//div[@data-test='inventory-item-name' and text()='{productName}']]"));
             itemContainer.FindElement(_inventoryItemNameLocator).Click();
             return new ProductDetailsPage(_driver);
         }

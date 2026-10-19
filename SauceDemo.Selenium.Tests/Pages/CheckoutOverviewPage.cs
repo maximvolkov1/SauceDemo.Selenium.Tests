@@ -19,41 +19,30 @@ namespace SauceDemo.Selenium.Tests.Pages
         private readonly By _totalLabelLocator = By.CssSelector("[data-test='total-label']");
 
         [AllureStep("Считываем заголовок страницы проверки заказа")]
-        public string GetTitleText()
-        {
-            return _driver.FindElement(_titleLocator).Text;
-        }
+        public string GetTitleText() => WaitAndGetText(_titleLocator);
 
         [AllureStep("Отменяем заказ и возвращаемся на главную витрину товаров")]
         public ProductPage ClickCancel()
         {
-            _driver.FindElement(_cancelButtonLocator).Click();
+            WaitAndClick(_cancelButtonLocator);
             return new ProductPage(_driver);
         }
 
         [AllureStep("Подтверждаем заказ и завершаем оформление")]
         public CheckoutCompletePage ClickFinish()
         {
-            _driver.FindElement(_finishButtonLocator).Click();
+            WaitAndClick(_finishButtonLocator);
             return new CheckoutCompletePage(_driver);
         }
 
         [AllureStep("Считываем чистую стоимость товаров (Item total)")]
-        public string GetItemTotalText()
-        {
-            return _driver.FindElement(_subtotalLabelLocator).Text;
-        }
+        public string GetItemTotalText() => WaitAndGetText(_subtotalLabelLocator);
 
         [AllureStep("Считываем сумму налога (Tax)")]
-        public string GetTaxText()
-        {
-            return _driver.FindElement(_taxLabelLocator).Text;
-        }
+        public string GetTaxText() => WaitAndGetText(_taxLabelLocator);
 
         [AllureStep("Считываем итоговую сумму к оплате (Total)")]
-        public string GetTotalText()
-        {
-            return _driver.FindElement(_totalLabelLocator).Text;
-        }
+        public string GetTotalText() => WaitAndGetText(_totalLabelLocator);
+
     }
 }

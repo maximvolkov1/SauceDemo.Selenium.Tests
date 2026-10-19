@@ -18,29 +18,22 @@ namespace SauceDemo.Selenium.Tests.Pages
         private readonly By _generatePdfOrderButtonLocator = By.CssSelector("[data-test='generate-pdf-order']");
 
         [AllureStep("Считываем заголовок финальной страницы заказа")]
-        public string GetTitleText()
-        {
-            return _driver.FindElement(_titleLocator).Text;
-        }
+        public string GetTitleText() => WaitAndGetText(_titleLocator);
 
         [AllureStep("Считываем текст подтверждения заказа ('Thank you for your order!')")]
-        public string GetTextThanksForOrder()
-        {
-            return _driver.FindElement(_textThanksForOrderLocator).Text;
-        }
+        public string GetTextThanksForOrder() => WaitAndGetText(_textThanksForOrderLocator);
 
         [AllureStep("Нажимаем кнопку 'Back Home' и возвращаемся на главную витрину товаров")]
         public ProductPage ClickBackHomeButton()
         {
-            _driver.FindElement(_backHomeButtonLocator).Click();
+            WaitAndClick(_backHomeButtonLocator);
             return new ProductPage(_driver);
-
         }
 
         [AllureStep("Запрашиваем генерацию PDF-документа с подтверждением заказа")]
         public CheckoutCompletePage ClickGeneratePdfOrderButton()
         {
-            _driver.FindElement(_generatePdfOrderButtonLocator).Click();
+            WaitAndClick(_generatePdfOrderButtonLocator);
             return this;
         }
 
